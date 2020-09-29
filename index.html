@@ -1,0 +1,124 @@
+<!-- HTML is the best programming language! -->
+
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+
+
+<p id="sat_count" class="counter">시계 로딩 중..</p>
+<p id="gupsik" class="gupsik">급식정보 로딩 중..</p>
+
+
+1 <p id="time_1" class="time_1">시간표 로딩 중..</p>
+2 <p id="time_2" class="time_2">시간표 로딩 중..</p>
+3 <p id="time_3" class="time_3">시간표 로딩 중..</p>
+4 <p id="time_4" class="time_4">시간표 로딩 중..</p>
+5 <p id="time_5" class="time_5">시간표 로딩 중..</p>
+6 <p id="time_6" class="time_6">시간표 로딩 중..</p>
+7 <p id="time_7" class="time_7">시간표 로딩 중..</p>
+8 <p id="time_8" class="time_8">시간표 로딩 중..</p>
+9 <p id="time_9" class="time_9">시간표 로딩 중..</p>
+
+
+const clock = document.querySelector('clock');
+
+function getTime(){
+    const time = new Date();
+    const hour = time.getHours();
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
+	
+    var year = time.getFullYear();
+    var month = time.getMonth()+1
+    var day = time.getDate();
+    if(month < 10){
+        month = "0"+month;
+    }
+    if(day < 10){
+        day = "0"+day;
+    }
+ 
+    const today = year+"년 "+month+"월 "+day+"일 ";
+    document.getElementById('sat_count').innerHTML = `${today} - ${hour<10 ? `0${hour}`:hour}:${minutes<10 ? `0${minutes}`:minutes}:${seconds<10 ? `0${seconds}`:seconds}`
+}
+
+
+function init(){
+    setInterval(getTime, 1000);
+}
+
+init();
+
+
+</script>
+
+<!-- cf97f7f66ec544c9863ab49777be7188 -->
+<a href="javascript:openswal();">!open swal</a>
+
+<a href="javascript:meal();">급식가져오기swal</a>
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+function openswal(val) {
+Swal.fire({
+  title: 'Submit your Github username',
+  input: 'text',
+  inputAttributes: {
+    autocapitalize: 'off'
+  },
+  showCancelButton: true,
+  confirmButtonText: 'Look up',
+  showLoaderOnConfirm: true,
+  preConfirm: (login) => {
+    return fetch(`//api.github.com/users/${login}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(response.statusText)
+        }
+        return response.json()
+      })
+      .catch(error => {
+        Swal.showValidationMessage(
+          `Request failed: ${error}`
+        )
+      })
+  },
+  allowOutsideClick: () => !Swal.isLoading()
+}).then((result) => {
+  if (result.isConfirmed) {
+    Swal.fire({
+      title: `${result.value.login}'s avatar`,
+      imageUrl: result.value.avatar_url
+    })
+  }
+})
+}
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Ajax - 급식 API 재가공 데이터 -->
+<script>
+  $.ajax({
+    type: "GET",
+    url: "https://gupsik.biago.ga/api.php",
+    dataType: 'json',
+    async: false,
+    success: function(data){
+      document.getElementById("gupsik").innerHTML = data.gupsik;
+      document.getElementById("time_1").innerHTML = data.time_1;
+      document.getElementById("time_2").innerHTML = data.time_2;
+      document.getElementById("time_3").innerHTML = data.time_3;
+      document.getElementById("time_4").innerHTML = data.time_4;
+      document.getElementById("time_5").innerHTML = data.time_5;
+      document.getElementById("time_6").innerHTML = data.time_6;
+      document.getElementById("time_7").innerHTML = data.time_7;
+      document.getElementById("time_8").innerHTML = data.time_8;
+      document.getElementById("time_9").innerHTML = data.time_9;
+    }
+    ,
+    error:function (xhr, ajaxOptions, thrownError){
+      alert("please try https");
+      return;
+    }
+  });
+</script>
+
